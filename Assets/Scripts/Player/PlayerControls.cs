@@ -46,6 +46,18 @@ public class PlayerControls : MonoBehaviour {
             isDragging = false;
             Build();
         }
+        if (Input.GetMouseButtonDown(1))
+        {
+            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, Mathf.Infinity);
+            if (hit.collider != null)
+            {
+                Wall wall = hit.collider.GetComponent<Wall>();
+                if (wall != null)
+                {
+                    wall.Hit(50);
+                }
+            }
+        }
     }
 
     void KeyboardInput()
@@ -58,19 +70,29 @@ public class PlayerControls : MonoBehaviour {
         controlLayer = buildingLayer;
         mousePosInWorldCoords = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         dragStart = new Vector3(mousePosInWorldCoords.x,mousePosInWorldCoords.y,0);
-        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, Mathf.Infinity, 1 << controlLayer);
-        
-        if (hit.collider == null)
+        RaycastHit2D[] hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, Mathf.Infinity, 1 << controlLayer);
+
+        Debug.Log(controlLayer);
+
+        if (hits.Length <= 0)
         {
             controlLayer = buildingArtLayer;
             isDragging = true;
         }
         else {
-            Debug.Log(hit.collider.name);
-            if (hit.collider.GetComponent<Wall>() != null)
+            Collider2D col = null;
+            foreach (RaycastHit2D hit in hits)
+            {
+                if (col == null) { col = hit.collider; }
+                if (col.transform.parent.position.y > hit.collider.transform.parent.position.y)
+                {
+                    col = hit.collider;
+                }
+            }
+            if (col != null)
             {
                 controlLayer = buildingArtLayer;
-                dragStart = hit.collider.transform.parent.position;
+                dragStart = col.transform.parent.position;
                 isDragging = true;
             }
         }
