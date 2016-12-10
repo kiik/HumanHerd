@@ -5,9 +5,11 @@ using UnityEngine;
 public class PlayerControls : MonoBehaviour {
 
     // Drag
-    public GameObject WallPrefab;
+    public GameObject wallPrefab;
     Vector2 dragStart;
     Vector2 dragEnd;
+
+    Vector3 mousePosInWorldCoords;
 
 	// Use this for initialization
 	void Start () {
@@ -39,7 +41,14 @@ public class PlayerControls : MonoBehaviour {
 
     void MouseRay()
     {
+        mousePosInWorldCoords = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        dragStart = new Vector3(mousePosInWorldCoords.x,mousePosInWorldCoords.y,0);
         RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-        Debug.Log(Input.mousePosition);
+        
+        if (hit.collider == null)
+        {
+            Instantiate(wallPrefab, dragStart, Quaternion.identity);
+        }
+        else { Debug.Log(hit.collider.name); }
     }
 }
