@@ -33,7 +33,6 @@ public class Pan : MonoBehaviour
 
       Vector3 dv = m_wpoint - getAnchor();
 
-      Debug.Log(m_wpoint);
       target.transform.Translate(Vector3.Lerp(dv, m_wpoint, 1.0f * Time.deltaTime));
     }
   }
