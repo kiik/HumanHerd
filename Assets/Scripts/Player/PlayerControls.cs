@@ -24,7 +24,7 @@ public class PlayerControls : MonoBehaviour {
 
     void MouseInput()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
             MouseRay();
         }
