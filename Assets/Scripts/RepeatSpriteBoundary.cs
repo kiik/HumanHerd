@@ -22,15 +22,15 @@ public class RepeatSpriteBoundary : MonoBehaviour {
        childSprite.sprite = sprite.sprite;
 
 			 Debug.Log(gameObject.GetComponent<Renderer>().bounds);
-			 Debug.Log(sprite.bounds.size.x);
+			 Debug.Log(sprite.bounds);
 			 Debug.Log(spriteSize);
 
        // Loop through and spit out repeated tiles
        GameObject child;
-       for (int i = 1, l = (int)Mathf.Round(sprite.bounds.size.y); i < l; i++) {
-				 for (int j = 1, k = (int)Mathf.Round(sprite.bounds.size.x); j < k; j++) {
+       for (int i = 1, l = 11; i < l; i++) {
+				 for (int j = 1, k = 11; j < k; j++) {
 	           child = Instantiate(childPrefab) as GameObject;
-	           child.transform.position = transform.position - (new Vector3(spriteSize.x, spriteSize.y, 0) * i);
+	           child.transform.position = (new Vector3(transform.position.x - (spriteSize.x * j) + spriteSize.x * 11 / 2, transform.position.y - (spriteSize.y * i) + spriteSize.y * 11 / 2, 0));
 	           child.transform.parent = transform;
 	       }
        }
