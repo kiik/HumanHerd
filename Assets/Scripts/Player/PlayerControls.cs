@@ -8,6 +8,9 @@ public class PlayerControls : MonoBehaviour {
     public GameObject wallPrefab;
     Vector2 dragStart;
     Vector2 dragEnd;
+    bool isDragging = false;
+    int maxFit = 0;
+
 
     Vector3 mousePosInWorldCoords;
 
@@ -18,19 +21,25 @@ public class PlayerControls : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (isDragging)
+        {
+            DrawLineObjects();
+        }
         MouseInput();
         KeyboardInput();
 	}
 
     void MouseInput()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
+            isDragging = true;
             MouseRay();
         }
         else if (Input.GetMouseButtonUp(0))
         {
-
+            isDragging = false;
+            Build();
         }
     }
 
@@ -47,8 +56,37 @@ public class PlayerControls : MonoBehaviour {
         
         if (hit.collider == null)
         {
-            Instantiate(wallPrefab, dragStart, Quaternion.identity);
+            Instantiate(wallPrefab, dragStart, wallPrefab.transform.localRotation);
         }
-        else { Debug.Log(hit.collider.name); }
+        else { 
+            // TODO check what we hit. 
+        }
+    }
+
+    void DrawLineObjects()
+    {
+        mousePosInWorldCoords = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        dragEnd = new Vector3(mousePosInWorldCoords.x, mousePosInWorldCoords.y, 0);
+        Debug.DrawLine(dragStart, dragEnd);
+        float totalLength = (dragStart-dragEnd).magnitude;
+
+        int objectsToDraw = (int)(totalLength * 100) / 16;
+        int poolCount = PoolManager.instance.GetWoodenWallPoolCount();
+
+        // Add objects to pool if missing
+        if (poolCount < objectsToDraw)
+        {
+            for (int i=0; i< objectsToDraw-poolCount; i++)
+            {
+                PoolManager.instance.IncreaseWoodenWallPool();
+            }
+        }
+
+
+    }
+
+    void Build()
+    {
+
     }
 }
