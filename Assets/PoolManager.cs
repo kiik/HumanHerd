@@ -16,8 +16,6 @@ public class PoolManager : MonoBehaviour
     public int woodenWallPoolCount = 0;
     public List<GameObject> woodenWallPool = new List<GameObject>();
 
-    public GameObject testObj;
-
     void Awake()
     {
         if (!instance) { instance = this; }
@@ -114,12 +112,6 @@ public class PoolManager : MonoBehaviour
             Vector3 max = new Vector3(Mathf.Max(b1.max.x, b2.max.x), Mathf.Max(b1.max.y, b2.max.y), 0);
 
             Bounds b = new Bounds(min + (max - min) * 0.5f, max - min);
-
-
-            Debug.Log(b.min + " -- " + b.max);
-
-            Instantiate(testObj, b.min, Quaternion.identity);
-            Instantiate(testObj, b.max, Quaternion.identity);
 
             guo = new GraphUpdateObject(b);
             AstarPath.active.UpdateGraphs(guo);

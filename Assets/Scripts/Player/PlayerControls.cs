@@ -63,7 +63,6 @@ public class PlayerControls : MonoBehaviour {
         if (hit.collider == null)
         {
             controlLayer = buildingArtLayer;
-            Debug.Log("TRUE");
             isDragging = true;
         }
         else {
@@ -115,7 +114,6 @@ public class PlayerControls : MonoBehaviour {
         }
 
         Debug.DrawLine(((completeDragLine / totalLength) * 0.16f * 1) + dragStart, dragEnd);
-        Debug.Log(LayerMask.LayerToName(controlLayer) + ", " + controlLayer);
         if (Physics2D.Linecast(((completeDragLine / totalLength) * 0.16f * 1) + dragStart, dragEnd, 1 << controlLayer))
         {
             PoolManager.instance.ProhibitBuild();
