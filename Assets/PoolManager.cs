@@ -9,6 +9,8 @@ public class PoolManager : MonoBehaviour
     GameObject WoodenWallParent;
     [SerializeField]
     GameObject WoodenWall;
+    [SerializeField]
+    GameObject WoodenWallBuild;
     public int woodenWallPoolCount = 0;
     public List<GameObject> woodenWallPool = new List<GameObject>();
 
@@ -52,8 +54,44 @@ public class PoolManager : MonoBehaviour
         foreach (GameObject go in woodenWallPool)
         {
             Relay relay = go.GetComponent<Relay>();
+            relay.buildingMaterial.SetBMInactive();
             relay.buildingMaterial.Clear();
             relay.buildingMaterial.DisableSpriteRenderer();
         }
+    }
+
+    public void SetWoodenWallPos(int index, Vector2 pos)
+    {
+        GameObject woodenWall = woodenWallPool[index];
+        woodenWall.transform.position = pos;
+        Relay relay = woodenWall.GetComponent<Relay>();
+        relay.buildingMaterial.EnableSpriteRenderer();
+        relay.buildingMaterial.Clear();
+        relay.buildingMaterial.SetBMActive();
+    }
+
+    public void CheckWoodenWallDisable(int index)
+    {
+        GameObject go = woodenWallPool[index];
+        Relay relay = go.GetComponent<Relay>();
+        if (relay.buildingMaterial.IsActive())
+        {
+            go.transform.localPosition = Vector2.zero;
+            relay.buildingMaterial.DisableSpriteRenderer();
+            relay.buildingMaterial.SetBMInactive();
+        }
+    }
+
+    public void BuildWoodenWall()
+    {
+        foreach (GameObject go in woodenWallPool)
+        {
+            Relay relay = go.GetComponent<Relay>();
+            if (relay.buildingMaterial.IsActive())
+            {
+                Instantiate(WoodenWallBuild, go.transform.position, go.transform.rotation);
+            }
+        }
+        ResetWoodenWallPool();
     }
 }

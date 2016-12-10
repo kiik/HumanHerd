@@ -7,7 +7,7 @@ public class BuildingMaterial : MonoBehaviour {
     Color32 obstructed = new Color32(230, 90, 90, 200);
     Color32 clear = new Color32(90,230,115,200);
 
-    bool isAvailable = true;
+    bool isActive = false;
 
 	void Awake () {
         sr = GetComponent<SpriteRenderer>();
@@ -22,12 +22,24 @@ public class BuildingMaterial : MonoBehaviour {
     {
         sr.color = clear;
     }
-    public bool IsAvailable()
+    public bool IsActive()
     {
-        return isAvailable;
+        return isActive;
+    }
+    public void SetBMActive()
+    {
+        isActive = true;
+    }
+    public void SetBMInactive()
+    {
+        isActive = false;
     }
     public void DisableSpriteRenderer()
     {
         sr.enabled = false;
+    }
+    public void EnableSpriteRenderer()
+    {
+        sr.enabled = true;
     }
 }

@@ -8,6 +8,7 @@ public class PlayerControls : MonoBehaviour {
     public GameObject wallPrefab;
     Vector2 dragStart;
     Vector2 dragEnd;
+    Vector2 completeDragLine;
     bool isDragging = false;
     int maxFit = 0;
 
@@ -33,7 +34,6 @@ public class PlayerControls : MonoBehaviour {
     {
         if (Input.GetMouseButtonDown(0))
         {
-            isDragging = true;
             MouseRay();
         }
         else if (Input.GetMouseButtonUp(0))
@@ -56,7 +56,7 @@ public class PlayerControls : MonoBehaviour {
         
         if (hit.collider == null)
         {
-            Instantiate(wallPrefab, dragStart, wallPrefab.transform.localRotation);
+            isDragging = true;
         }
         else { 
             // TODO check what we hit. 
@@ -68,12 +68,13 @@ public class PlayerControls : MonoBehaviour {
         mousePosInWorldCoords = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         dragEnd = new Vector3(mousePosInWorldCoords.x, mousePosInWorldCoords.y, 0);
         Debug.DrawLine(dragStart, dragEnd);
-        float totalLength = (dragStart-dragEnd).magnitude;
 
+        completeDragLine = dragEnd - dragStart;
+        float totalLength = (completeDragLine).magnitude;
         int objectsToDraw = (int)(totalLength * 100) / 16;
         int poolCount = PoolManager.instance.GetWoodenWallPoolCount();
 
-        // Add objects to pool if missing
+        // Add objects to pool if needed
         if (poolCount < objectsToDraw)
         {
             for (int i=0; i< objectsToDraw-poolCount; i++)
@@ -81,12 +82,27 @@ public class PlayerControls : MonoBehaviour {
                 PoolManager.instance.IncreaseWoodenWallPool();
             }
         }
-
-
+        
+        // Activate required objects
+        for (int i = 0; i < objectsToDraw; i++)
+        {
+            if (i == 0) { PoolManager.instance.SetWoodenWallPos(i, dragStart); }
+            PoolManager.instance.SetWoodenWallPos(i, ((completeDragLine / totalLength) * 0.16f * i)+dragStart);
+        }
+        // Disable objects if necessary
+        int objectsToDisable = poolCount - objectsToDraw;
+        poolCount = PoolManager.instance.GetWoodenWallPoolCount();
+        if (objectsToDisable > 0)
+        {
+            for (int i = 0; i < objectsToDisable; i++)
+            {
+                PoolManager.instance.CheckWoodenWallDisable((poolCount-objectsToDisable)+i);
+            }
+        }
     }
 
     void Build()
     {
-
+        PoolManager.instance.BuildWoodenWall();
     }
 }
