@@ -15,11 +15,13 @@ public class PlayerControls : MonoBehaviour {
     int buildingArtLayer;
     int controlLayer;
 
+    UIManager uiMan;
 
     Vector3 mousePosInWorldCoords;
 
 	// Use this for initialization
 	void Start () {
+        uiMan = GameManager.instance.GetComponent<UIManager>();
         buildingLayer = LayerMask.NameToLayer("Building");
         buildingArtLayer = LayerMask.NameToLayer("BuildingArt");
         controlLayer = buildingLayer;
@@ -27,6 +29,7 @@ public class PlayerControls : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (uiMan.menuState == UIManager.MenuState.GameMenu || uiMan.menuState == UIManager.MenuState.Tutorial) { return; }
         if (isDragging)
         {
             DrawLineObjects();
