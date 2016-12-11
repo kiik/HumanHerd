@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlayerControls : MonoBehaviour {
+public class PlayerMouseControls : MonoBehaviour {
 
     // Drag
     public GameObject wallPrefab;
@@ -38,7 +38,6 @@ public class PlayerControls : MonoBehaviour {
             DrawLineObjects();
         }
         MouseInput();
-        KeyboardInput();
 	}
 
     void MouseInput()
@@ -64,11 +63,6 @@ public class PlayerControls : MonoBehaviour {
                 }
             }
         }
-    }
-
-    void KeyboardInput()
-    {
-
     }
 
     void MouseRay()
