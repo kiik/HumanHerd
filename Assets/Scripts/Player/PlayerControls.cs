@@ -10,10 +10,11 @@ public class PlayerControls : MonoBehaviour {
     Vector2 dragEnd;
     Vector2 completeDragLine;
     bool isDragging = false;
-    int maxFit = 0;
     int buildingLayer;
     int buildingArtLayer;
     int controlLayer;
+
+    int totalCurrency;
 
     UIManager uiMan;
 
@@ -21,7 +22,7 @@ public class PlayerControls : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        uiMan = GameManager.instance.GetComponent<UIManager>();
+        uiMan = GameManager.instance.uiManager;
         buildingLayer = LayerMask.NameToLayer("Building");
         buildingArtLayer = LayerMask.NameToLayer("BuildingArt");
         controlLayer = buildingLayer;
@@ -70,6 +71,8 @@ public class PlayerControls : MonoBehaviour {
 
     void MouseRay()
     {
+        totalCurrency = GameManager.instance.ecoManager.GetCurrency();
+        Debug.Log("total: " + totalCurrency);
         controlLayer = buildingLayer;
         mousePosInWorldCoords = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         dragStart = new Vector3(mousePosInWorldCoords.x,mousePosInWorldCoords.y,0);
@@ -120,12 +123,13 @@ public class PlayerControls : MonoBehaviour {
                 PoolManager.instance.IncreaseWoodenWallPool();
             }
         }
-        
+
         // Activate required objects
+        int totalCost = 0;
         for (int i = 0; i < objectsToDraw; i++)
         {
             if (i == 0) { PoolManager.instance.SetWoodenWallPos(i, dragStart); }
-            PoolManager.instance.SetWoodenWallPos(i, ((completeDragLine / totalLength) * 0.16f * i)+dragStart);
+            totalCost += PoolManager.instance.SetWoodenWallPos(i, ((completeDragLine / totalLength) * 0.16f * i)+dragStart);
         }
         // Disable objects if necessary
         int objectsToDisable = poolCount - objectsToDraw;
@@ -142,11 +146,25 @@ public class PlayerControls : MonoBehaviour {
         if (Physics2D.Linecast(((completeDragLine / totalLength) * 0.16f * 1) + dragStart, dragEnd, 1 << controlLayer))
         {
             PoolManager.instance.ProhibitBuild();
+            return;
         }
+
+        if (totalCost > GameManager.instance.ecoManager.GetCurrency())
+        {
+            PoolManager.instance.ProhibitBuild();
+            return;
+        }
+
+        // TODO change mouse hover text instead.
+        GameManager.instance.uiManager.SetMoneyText(GameManager.instance.ecoManager.GetCurrency() - totalCost);
     }
 
     void Build()
     {
-        PoolManager.instance.BuildWoodenWall();
+        int totalCost = PoolManager.instance.BuildWoodenWall();
+        GameManager.instance.ecoManager.DecreaseCurrency(totalCost);
+        GameManager.instance.uiManager.SetMoneyText(totalCurrency - totalCost);
+
+        totalCurrency = 0;
     }
 }

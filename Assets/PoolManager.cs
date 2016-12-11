@@ -62,9 +62,9 @@ public class PoolManager : MonoBehaviour
         }
     }
 
-    public void SetWoodenWallPos(int index, Vector2 pos)
+    public int SetWoodenWallPos(int index, Vector2 pos)
     {
-        if (float.IsNaN(pos.x)) { return; }
+        if (float.IsNaN(pos.x)) { return 0; }
 
         GameObject woodenWall = woodenWallPool[index];
         woodenWall.transform.position = pos;
@@ -72,6 +72,8 @@ public class PoolManager : MonoBehaviour
         relay.buildingMaterial.EnableSpriteRenderer();
         relay.buildingMaterial.Clear();
         relay.buildingMaterial.SetBMActive();
+
+        return relay.buildingMaterial.cost;
     }
 
     public void CheckWoodenWallDisable(int index)
@@ -87,14 +89,17 @@ public class PoolManager : MonoBehaviour
         }
     }
 
-    public GraphUpdateObject BuildWoodenWall()
+    public int BuildWoodenWall()
     {
         GameObject g1 = null;
         GameObject g2 = null;
 
+        int totalCost = 0;
+
         foreach (GameObject go in woodenWallPool.Where(g => g.GetComponent<Relay>().buildingMaterial.IsActive() && !g.GetComponent<Relay>().buildingMaterial.IsObstructed()))
         {
             GameObject g = Instantiate(WoodenWallBuild, go.transform.position, go.transform.rotation);
+            totalCost += go.GetComponent<Relay>().buildingMaterial.cost;
             if (g1 == null)
             {
                 g1 = g;
@@ -119,7 +124,7 @@ public class PoolManager : MonoBehaviour
 
         ResetWoodenWallPool();
 
-        return guo;
+        return totalCost;
     }
 
     public void ProhibitBuild()

@@ -3,6 +3,8 @@
 [RequireComponent(typeof(SpriteRenderer))]
 public class BuildingMaterial : MonoBehaviour {
 
+    public int cost = 1;
+
     SpriteRenderer sr;
     Color32 obstructed = new Color32(230, 90, 90, 200);
     Color32 clear = new Color32(90,230,115,200);
