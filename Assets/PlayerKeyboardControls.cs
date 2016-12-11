@@ -3,6 +3,8 @@
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerKeyboardControls : MonoBehaviour {
 
+    [SerializeField]
+    Animator anim;
     Rigidbody2D rb;
     float flightForce = 3;
 
@@ -41,17 +43,21 @@ public class PlayerKeyboardControls : MonoBehaviour {
     void Up()
     {
         rb.AddForce(transform.up * flightForce * Time.deltaTime, ForceMode2D.Impulse);
+        anim.SetFloat("speedY", 1);
     }
     void Down()
     {
         rb.AddForce(-transform.up * flightForce * Time.deltaTime, ForceMode2D.Impulse);
+        anim.SetFloat("speedY", -1);
     }
     void Left()
     {
+        anim.SetFloat("speedX", -1);
         rb.AddForce(-transform.right * flightForce * Time.deltaTime, ForceMode2D.Impulse);
     }
     void Right()
     {
+        anim.SetFloat("speedX", 1);
         rb.AddForce(transform.right * flightForce * Time.deltaTime, ForceMode2D.Impulse);
     }
     void Descend()
