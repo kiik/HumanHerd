@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour {
 
     public UIManager uiManager;
     public EconomyManager ecoManager;
+    public SoundManager soundManager;
 
 	void Awake()
     {
