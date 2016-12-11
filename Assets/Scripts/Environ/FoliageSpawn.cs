@@ -10,8 +10,6 @@ public class FoliageSpawn : MonoBehaviour {
 
 	void Start () {
 		Bounds b = ((Collider2D)GetComponent<Collider2D>()).bounds;
-		Debug.Log(b.min);
-		Debug.Log(b.max);
 
 		spawnFoliage();
 	}
