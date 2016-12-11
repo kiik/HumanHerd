@@ -11,14 +11,19 @@ public class PlayerControls : MonoBehaviour {
     Vector2 completeDragLine;
     bool isDragging = false;
     int maxFit = 0;
+    int buildingLayer;
+    int buildingArtLayer;
+    int controlLayer;
 
 
     Vector3 mousePosInWorldCoords;
 
 	// Use this for initialization
 	void Start () {
-		
-	}
+        buildingLayer = LayerMask.NameToLayer("Building");
+        buildingArtLayer = LayerMask.NameToLayer("BuildingArt");
+        controlLayer = buildingLayer;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -41,6 +46,18 @@ public class PlayerControls : MonoBehaviour {
             isDragging = false;
             Build();
         }
+        if (Input.GetMouseButtonDown(1))
+        {
+            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, Mathf.Infinity);
+            if (hit.collider != null)
+            {
+                Wall wall = hit.collider.GetComponent<Wall>();
+                if (wall != null)
+                {
+                    wall.Hit(50);
+                }
+            }
+        }
     }
 
     void KeyboardInput()
@@ -50,16 +67,34 @@ public class PlayerControls : MonoBehaviour {
 
     void MouseRay()
     {
+        controlLayer = buildingLayer;
         mousePosInWorldCoords = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         dragStart = new Vector3(mousePosInWorldCoords.x,mousePosInWorldCoords.y,0);
-        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-        
-        if (hit.collider == null)
+        RaycastHit2D[] hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, Mathf.Infinity, 1 << controlLayer);
+
+        Debug.Log(controlLayer);
+
+        if (hits.Length <= 0)
         {
+            controlLayer = buildingArtLayer;
             isDragging = true;
         }
-        else { 
-            // TODO check what we hit. 
+        else {
+            Collider2D col = null;
+            foreach (RaycastHit2D hit in hits)
+            {
+                if (col == null) { col = hit.collider; }
+                if (col.transform.parent.position.y > hit.collider.transform.parent.position.y)
+                {
+                    col = hit.collider;
+                }
+            }
+            if (col != null)
+            {
+                controlLayer = buildingArtLayer;
+                dragStart = col.transform.parent.position;
+                isDragging = true;
+            }
         }
     }
 
@@ -67,11 +102,11 @@ public class PlayerControls : MonoBehaviour {
     {
         mousePosInWorldCoords = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         dragEnd = new Vector3(mousePosInWorldCoords.x, mousePosInWorldCoords.y, 0);
-        Debug.DrawLine(dragStart, dragEnd);
+        //Debug.DrawLine(dragStart, dragEnd);
 
         completeDragLine = dragEnd - dragStart;
         float totalLength = (completeDragLine).magnitude;
-        int objectsToDraw = (int)(totalLength * 100) / 16;
+        int objectsToDraw = (int)(totalLength * 100) / 16 + 1;
         int poolCount = PoolManager.instance.GetWoodenWallPoolCount();
 
         // Add objects to pool if needed
@@ -98,6 +133,12 @@ public class PlayerControls : MonoBehaviour {
             {
                 PoolManager.instance.CheckWoodenWallDisable((poolCount-objectsToDisable)+i);
             }
+        }
+
+        Debug.DrawLine(((completeDragLine / totalLength) * 0.16f * 1) + dragStart, dragEnd);
+        if (Physics2D.Linecast(((completeDragLine / totalLength) * 0.16f * 1) + dragStart, dragEnd, 1 << controlLayer))
+        {
+            PoolManager.instance.ProhibitBuild();
         }
     }
 
