@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlayerControls : MonoBehaviour {
+public class PlayerMouseControls : MonoBehaviour {
 
     // Drag
     public GameObject wallPrefab;
@@ -20,8 +18,12 @@ public class PlayerControls : MonoBehaviour {
 
     Vector3 mousePosInWorldCoords;
 
-	// Use this for initialization
-	void Start () {
+    // Text colors
+    Color32 enoughMoney = new Color32(45, 125, 60,255);
+    Color32 notEnoughMoney = new Color32(204, 44, 44, 255);
+
+    // Use this for initialization
+    void Start () {
         uiMan = GameManager.instance.uiManager;
         buildingLayer = LayerMask.NameToLayer("Building");
         buildingArtLayer = LayerMask.NameToLayer("BuildingArt");
@@ -36,7 +38,6 @@ public class PlayerControls : MonoBehaviour {
             DrawLineObjects();
         }
         MouseInput();
-        KeyboardInput();
 	}
 
     void MouseInput()
@@ -62,11 +63,6 @@ public class PlayerControls : MonoBehaviour {
                 }
             }
         }
-    }
-
-    void KeyboardInput()
-    {
-
     }
 
     void MouseRay()
@@ -152,11 +148,11 @@ public class PlayerControls : MonoBehaviour {
         if (totalCost > GameManager.instance.ecoManager.GetCurrency())
         {
             PoolManager.instance.ProhibitBuild();
+            GameManager.instance.uiManager.SetMouseText("No money", notEnoughMoney);
             return;
         }
-
-        // TODO change mouse hover text instead.
-        GameManager.instance.uiManager.SetMoneyText(GameManager.instance.ecoManager.GetCurrency() - totalCost);
+        
+        GameManager.instance.uiManager.SetMouseText("Cost: " + totalCost, enoughMoney);
     }
 
     void Build()
@@ -164,7 +160,7 @@ public class PlayerControls : MonoBehaviour {
         int totalCost = PoolManager.instance.BuildWoodenWall();
         GameManager.instance.ecoManager.DecreaseCurrency(totalCost);
         GameManager.instance.uiManager.SetMoneyText(totalCurrency - totalCost);
-
+        GameManager.instance.uiManager.HideMouseText();
         totalCurrency = 0;
     }
 }
