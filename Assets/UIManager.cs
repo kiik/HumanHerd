@@ -58,7 +58,6 @@ public class UIManager : MonoBehaviour {
             topPanel.SetActive(true);
             mainMenuPanel.SetActive(false);
         }
-        Debug.Log(GameManager.instance.ecoManager);
         moneyText.text = GameManager.instance.ecoManager.GetCurrency().ToString();
         sheepText.text = GameManager.instance.ecoManager.GetSheepCount().ToString();
         // TODO add population count texts

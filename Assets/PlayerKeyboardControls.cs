@@ -90,14 +90,13 @@ public class PlayerKeyboardControls : MonoBehaviour {
     }
     void Descend()
     {
-        Debug.Log("Descend");
         if (fraction > 0f)
         {
             fraction -= Time.deltaTime / 0.2f;
         }
         else
         {
-            Debug.Log("has descended");
+            //Debug.Log("has descended");
             // TODO add descending sound effect
         }
 
@@ -108,14 +107,13 @@ public class PlayerKeyboardControls : MonoBehaviour {
     }
     void Ascend()
     {
-        Debug.Log("Ascend");
         if (fraction < 1f)
         {
             fraction += Time.deltaTime / 0.2f;
         }
         else
         {
-            Debug.Log("Has ascended");
+            //Debug.Log("Has ascended");
         }
 
         fraction = Mathf.Clamp(fraction, 0f, 1f);
