@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: cf68cdede82b5ee46832cab65772cfa4
-timeCreated: 1481482551
+guid: d492001125ce53b4fb22a144f44c64fc
+timeCreated: 1481480678
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: dirt01_0
-    21300002: dirt01_1
-    21300004: dirt01_2
-    21300006: dirt01_3
+    21300000: swamp01_0
+    21300002: swamp01_1
+    21300004: swamp01_2
+    21300006: swamp01_3
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -74,7 +74,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: dirt01_0
+      name: swamp01_0
       rect:
         serializedVersion: 2
         x: 0
@@ -87,7 +87,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: dirt01_1
+      name: swamp01_1
       rect:
         serializedVersion: 2
         x: 32
@@ -100,7 +100,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: dirt01_2
+      name: swamp01_2
       rect:
         serializedVersion: 2
         x: 0
@@ -113,7 +113,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: dirt01_3
+      name: swamp01_3
       rect:
         serializedVersion: 2
         x: 32
