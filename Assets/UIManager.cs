@@ -33,8 +33,16 @@ public class UIManager : MonoBehaviour {
 
     void UpdateMouseText()
     {
-        
+        mouseInfoText.transform.position = Input.mousePosition;
     }
+
+    public void SetMouseText(string s, Color color)
+    {
+        mouseInfoText.text = s;
+        mouseInfoText.color = color;
+    }
+
+    public void HideMouseText() { mouseInfoText.text = ""; }
 
     void InitializeMenu()
     {
