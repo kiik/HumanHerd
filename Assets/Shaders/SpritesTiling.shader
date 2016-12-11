@@ -6,8 +6,8 @@ Shader "Sprites/Tile"
 		_Color ("Tint", Color) = (1,1,1,1)
 		[MaterialToggle] PixelSnap ("Pixel snap", Float) = 0
 		RepeatX ("Repeat X", Float) = 1
-        RepeatY ("Repeat Y", Float) = 1
-        TOffsetX ("Tile Offset X", Int) = 0
+    RepeatY ("Repeat Y", Float) = 1
+    TOffsetX ("Tile Offset X", Int) = 0
 	}
 
 	SubShader
