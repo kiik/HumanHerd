@@ -8,9 +8,31 @@ public class PlayerKeyboardControls : MonoBehaviour {
     Rigidbody2D rb;
     float flightForce = 3;
 
-	void Start () {
+    [SerializeField]
+    GameObject shadow;
+    Vector2 shadowOffsetX_leftVector = new Vector2(0.08f, -0.6f);
+    Vector2 shadowOffsetX_rightVector = new Vector2(-0.08f, -0.6f);
+
+    [SerializeField]
+    Transform artTransform;
+    Vector3 maxHeight = Vector3.zero;
+    Vector3 minHeight = new Vector3(0,-0.37f,0);
+    Vector3 maxShadowSize = new Vector3(0.8f,0.2f,0);
+    Vector3 minShadowSize = new Vector3(0.6f, 0.15f, 0);
+    int weakShadowAlpha = 190;
+    int strongShadowAlpha = 255;
+    [SerializeField]
+    SpriteRenderer shadowSprite;
+    Color32 weakShadow = new Color32(255,255,255,190);
+    Color32 strongShadow = new Color32(255, 255, 255, 255);
+
+    public float fraction = 0;
+    float speed = .5f;
+
+    void Start () {
         rb = GetComponent<Rigidbody2D>();
-	}
+        shadow.transform.localPosition = shadowOffsetX_rightVector;
+    }
 	
 	void Update () {
         KeyboardInput();
@@ -38,6 +60,10 @@ public class PlayerKeyboardControls : MonoBehaviour {
         {
             Descend();
         }
+        else
+        {
+            Ascend();
+        }
     }
 
     void Up()
@@ -54,14 +80,47 @@ public class PlayerKeyboardControls : MonoBehaviour {
     {
         anim.SetFloat("speedX", -1);
         rb.AddForce(-transform.right * flightForce * Time.deltaTime, ForceMode2D.Impulse);
+        shadow.transform.localPosition = shadowOffsetX_leftVector;
     }
     void Right()
     {
         anim.SetFloat("speedX", 1);
         rb.AddForce(transform.right * flightForce * Time.deltaTime, ForceMode2D.Impulse);
+        shadow.transform.localPosition = shadowOffsetX_rightVector;
     }
     void Descend()
     {
+        Debug.Log("Descend");
+        if (fraction > 0f)
+        {
+            fraction -= Time.deltaTime / 0.2f;
+        }
+        else
+        {
+            Debug.Log("has descended");
+            // TODO add descending sound effect
+        }
 
+        fraction = Mathf.Clamp(fraction, 0f, 1f);
+        artTransform.localPosition = Vector3.Lerp(minHeight, maxHeight, fraction);
+        shadow.transform.localScale = Vector3.Lerp(minShadowSize, maxShadowSize, fraction);
+        shadowSprite.color = Color32.Lerp(strongShadow, weakShadow, fraction);
+    }
+    void Ascend()
+    {
+        Debug.Log("Ascend");
+        if (fraction < 1f)
+        {
+            fraction += Time.deltaTime / 0.2f;
+        }
+        else
+        {
+            Debug.Log("Has ascended");
+        }
+
+        fraction = Mathf.Clamp(fraction, 0f, 1f);
+        artTransform.localPosition = Vector3.Lerp(minHeight, maxHeight, fraction);
+        shadow.transform.localScale = Vector3.Lerp(minShadowSize, maxShadowSize, fraction);
+        shadowSprite.color = Color32.Lerp(strongShadow, weakShadow, fraction);
     }
 }
