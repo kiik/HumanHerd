@@ -158,6 +158,10 @@ public class PlayerMouseControls : MonoBehaviour {
     void Build()
     {
         int totalCost = PoolManager.instance.BuildWoodenWall();
+        if (totalCost > 0)
+        {
+            GameManager.instance.soundManager.WallConstructionFinish();
+        }
         GameManager.instance.ecoManager.DecreaseCurrency(totalCost);
         GameManager.instance.uiManager.SetMoneyText(totalCurrency - totalCost);
         GameManager.instance.uiManager.HideMouseText();
