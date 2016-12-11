@@ -1,13 +1,15 @@
 fileFormatVersion: 2
-guid: cf68cdede82b5ee46832cab65772cfa4
-timeCreated: 1481482551
+guid: 4c998cbf6f99cbd4e88d9356ce4559b0
+timeCreated: 1481472108
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: dirt01_0
-    21300002: dirt01_1
-    21300004: dirt01_2
-    21300006: dirt01_3
+    21300000: bushes01_0
+    21300002: bushes01_1
+    21300004: bushes01_2
+    21300006: bushes01_3
+    21300008: bushes01_4
+    21300010: bushes01_5
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -34,7 +36,7 @@ TextureImporter:
     filterMode: -1
     aniso: -1
     mipBias: -1
-    wrapMode: 0
+    wrapMode: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -74,7 +76,33 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: dirt01_0
+      name: bushes01_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 64
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bushes01_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 64
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: bushes01_2
       rect:
         serializedVersion: 2
         x: 0
@@ -87,7 +115,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: dirt01_1
+      name: bushes01_3
       rect:
         serializedVersion: 2
         x: 32
@@ -100,7 +128,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: dirt01_2
+      name: bushes01_4
       rect:
         serializedVersion: 2
         x: 0
@@ -113,7 +141,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: dirt01_3
+      name: bushes01_5
       rect:
         serializedVersion: 2
         x: 32
