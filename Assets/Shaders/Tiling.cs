@@ -1,21 +1,21 @@
 using UnityEngine;
 using System.Collections;
 
+[ExecuteInEditMode]
 [RequireComponent (typeof (SpriteRenderer))]
-
 public class Tiling : MonoBehaviour {
 
 	public float X;
 	public int tileOffset = 0;
 
 	void Awake () {
-		GetComponent<Renderer>().material.SetFloat("RepeatX", X);
-		GetComponent<Renderer>().material.SetFloat("TOffsetX", tileOffset);
+		GetComponent<Renderer>().sharedMaterial.SetFloat("RepeatX", X);
+		GetComponent<Renderer>().sharedMaterial.SetFloat("TOffsetX", tileOffset);
 	}
 
 	void Update() {
-		GetComponent<Renderer>().material.SetFloat("RepeatX", X);
-		GetComponent<Renderer>().material.SetFloat("TOffsetX", tileOffset);
+		GetComponent<Renderer>().sharedMaterial.SetFloat("RepeatX", X);
+		GetComponent<Renderer>().sharedMaterial.SetFloat("TOffsetX", tileOffset);
 	}
 
 }
