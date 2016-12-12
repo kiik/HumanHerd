@@ -7,9 +7,13 @@ public class UIManager : MonoBehaviour {
     public enum MenuState { MainMenu, GameMenu, Tutorial, MenuOff };
     public MenuState menuState;
 
+    public SoundManager soundManager;
+
     // Panels
     public GameObject menuPanel;
     public GameObject mainMenuPanel;
+    public GameObject newGamePanel;
+    public GameObject optionsPanel;
     public GameObject tutorialPanel;
     public GameObject topPanel;
 
@@ -19,6 +23,9 @@ public class UIManager : MonoBehaviour {
     public Text populationCountText;
     public Text populationEscapedText;
     public Text mouseInfoText;
+
+    // Toggle
+    public Toggle musicToggle;
 
     void Start()
     {
@@ -106,7 +113,8 @@ public class UIManager : MonoBehaviour {
 
     public void NewGame()
     {
-        SceneManager.LoadScene("Game");
+        mainMenuPanel.SetActive(false);
+        newGamePanel.SetActive(true);
     }
     public void Continue()
     {
@@ -119,8 +127,36 @@ public class UIManager : MonoBehaviour {
     }
     public void Options()
     {
-        // TODO implement options
+        mainMenuPanel.SetActive(false);
+        optionsPanel.SetActive(true);
     }
+    public void ToggleMusic()
+    {
+        if (musicToggle.isOn)
+        {
+            if (PlayerPrefs.HasKey("Music"))
+            {
+                PlayerPrefs.SetInt("Music", 1);
+            }
+            else
+            {
+                PlayerPrefs.SetInt("Music", 1);
+            }
+        }
+        else
+        {
+            if (PlayerPrefs.HasKey("Music"))
+            {
+                PlayerPrefs.SetInt("Music", 0);
+            }
+            else
+            {
+                PlayerPrefs.SetInt("Music", 0);
+            }
+        }
+        soundManager.CheckSoundOptions();
+    }
+
     public void ExitToMenu()
     {
         Time.timeScale = 1.0f;
@@ -129,6 +165,20 @@ public class UIManager : MonoBehaviour {
 	public void ExitGame()
     {
         Application.Quit();
+    }
+    public void NormalTheme()
+    {
+        SceneManager.LoadScene("Game");
+    }
+    public void ImperialTheme()
+    {
+        SceneManager.LoadScene("Game(Vader)");
+    }
+    public void Back()
+    {
+        newGamePanel.SetActive(false);
+        optionsPanel.SetActive(false);
+        mainMenuPanel.SetActive(true);
     }
 
     void KeyboardInput()
