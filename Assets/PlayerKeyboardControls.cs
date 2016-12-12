@@ -61,26 +61,17 @@ public class PlayerKeyboardControls : MonoBehaviour {
         {
             Right();
         }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (pickupController.state == PickupController.State.Busy)
-            {
-                pickupController.Release();
-            }
-        }
         if (Input.GetKeyUp(KeyCode.Space))
         {
             if (pickupController.state == PickupController.State.Busy)
             {
+                pickupController.Release();
                 pickupController.state = PickupController.State.Free;
             }
         }
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space) && pickupController.state == PickupController.State.Free)
         {
-            if (pickupController.state == PickupController.State.Free)
-            {
-                Descend();
-            }
+            Descend();
         }
         else
         {
