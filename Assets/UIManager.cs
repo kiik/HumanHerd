@@ -52,15 +52,15 @@ public class UIManager : MonoBehaviour {
             topPanel.SetActive(false);
             mainMenuPanel.SetActive(true);
         }
-        else if (SceneManager.GetActiveScene().name == "Game")
+        else if (SceneManager.GetActiveScene().name == "Game" || SceneManager.GetActiveScene().name == "Game(Vader)")
         {
             menuState = MenuState.MenuOff;
             topPanel.SetActive(true);
             mainMenuPanel.SetActive(false);
+            moneyText.text = GameManager.instance.ecoManager.GetCurrency().ToString();
+            sheepText.text = GameManager.instance.ecoManager.GetSheepCount().ToString();
+            // TODO add population count texts
         }
-        moneyText.text = GameManager.instance.ecoManager.GetCurrency().ToString();
-        sheepText.text = GameManager.instance.ecoManager.GetSheepCount().ToString();
-        // TODO add population count texts
     }
 
     public void SetMoneyText(int n)
@@ -123,6 +123,7 @@ public class UIManager : MonoBehaviour {
     }
     public void ExitToMenu()
     {
+        Time.timeScale = 1.0f;
         SceneManager.LoadScene("MainMenu");
     }
 	public void ExitGame()
