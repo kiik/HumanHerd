@@ -30,7 +30,7 @@ public class PlayerKeyboardControls : MonoBehaviour {
     float speed = .5f;
 
     [SerializeField]
-    GameObject camera;
+    BoxCollider2D pickupControllerCollider;
 
     void Start () {
         rb = GetComponent<Rigidbody2D>();
@@ -105,6 +105,7 @@ public class PlayerKeyboardControls : MonoBehaviour {
         {
             //Debug.Log("has descended");
             // TODO add descending sound effect
+            pickupControllerCollider.enabled = true;
         }
 
         fraction = Mathf.Clamp(fraction, 0f, 1f);
@@ -120,7 +121,7 @@ public class PlayerKeyboardControls : MonoBehaviour {
         }
         else
         {
-            //Debug.Log("Has ascended");
+            pickupControllerCollider.enabled = false;
         }
 
         fraction = Mathf.Clamp(fraction, 0f, 1f);
@@ -133,6 +134,6 @@ public class PlayerKeyboardControls : MonoBehaviour {
     {
         Vector3 pos = transform.position;
         pos.z = -10;
-        camera.transform.position = pos;
+        Camera.main.transform.position = pos;
     }
 }

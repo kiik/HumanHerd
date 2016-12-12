@@ -78,7 +78,6 @@ public class PoolManager : MonoBehaviour
         
         GameObject buildWall = wallPool[index];
         buildWall.transform.position = pos;
-        Debug.Log(buildWall.name);
         Relay relay = buildWall.GetComponent<Relay>();
         if (relay == null) { return 0; }
         relay.buildingMaterial.EnableSpriteRenderer();
