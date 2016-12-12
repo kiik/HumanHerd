@@ -9,7 +9,10 @@ public class SimpleCitizen : AIBase {
 
 		GameObject targetGoal;
 
+		bool m_pathing;
+
 	  void Start() {
+			m_pathing = true;
 			targetGoal = null;
 
 	    navigateTo(transform.position);
@@ -17,12 +20,15 @@ public class SimpleCitizen : AIBase {
 
 	  void Update() {
 			runDescisionBehaviour();
-	    runMotionBehaviour();
+
+			if(m_pathing) {
+				runMotionBehaviour();
+			}
 	  }
 
 	  protected override void onMotionUpdate(Vector3 dir) {
-	    dir *= speed;
-	    gameObject.GetComponent<Rigidbody2D>().AddForce(dir * speed);
+	    dir *= m_pathing ? speed : 0;
+	    gameObject.GetComponent<Rigidbody2D>().AddForce(dir);
 	  }
 
 	  void OnTriggerEnter2D(Collider2D o) {
@@ -46,6 +52,15 @@ public class SimpleCitizen : AIBase {
 					navigateTo(targetGoal.transform.position);
 				}
 			}
+		}
+
+		public void immobilize() {
+			m_pathing = false;
+			gameObject.GetComponent<Rigidbody2D>().velocity = new Vector3(0, 0, 0);
+		}
+
+		public void mobilize() {
+			m_pathing = true;
 		}
 
 }
