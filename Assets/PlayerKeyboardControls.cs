@@ -29,6 +29,9 @@ public class PlayerKeyboardControls : MonoBehaviour {
     public float fraction = 0;
     float speed = .5f;
 
+    [SerializeField]
+    BoxCollider2D pickupControllerCollider;
+
     void Start () {
         rb = GetComponent<Rigidbody2D>();
         shadow.transform.localPosition = shadowOffsetX_rightVector;
@@ -64,6 +67,10 @@ public class PlayerKeyboardControls : MonoBehaviour {
         {
             Ascend();
         }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            Focus();
+        }
     }
 
     void Up()
@@ -98,6 +105,7 @@ public class PlayerKeyboardControls : MonoBehaviour {
         {
             //Debug.Log("has descended");
             // TODO add descending sound effect
+            pickupControllerCollider.enabled = true;
         }
 
         fraction = Mathf.Clamp(fraction, 0f, 1f);
@@ -113,12 +121,19 @@ public class PlayerKeyboardControls : MonoBehaviour {
         }
         else
         {
-            //Debug.Log("Has ascended");
+            pickupControllerCollider.enabled = false;
         }
 
         fraction = Mathf.Clamp(fraction, 0f, 1f);
         artTransform.localPosition = Vector3.Lerp(minHeight, maxHeight, fraction);
         shadow.transform.localScale = Vector3.Lerp(minShadowSize, maxShadowSize, fraction);
         shadowSprite.color = Color32.Lerp(strongShadow, weakShadow, fraction);
+    }
+
+    void Focus()
+    {
+        Vector3 pos = transform.position;
+        pos.z = -10;
+        Camera.main.transform.position = pos;
     }
 }

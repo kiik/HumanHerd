@@ -3,7 +3,6 @@
 public class PlayerMouseControls : MonoBehaviour {
 
     // Drag
-    public GameObject wallPrefab;
     Vector2 dragStart;
     Vector2 dragEnd;
     Vector2 completeDragLine;
@@ -68,13 +67,10 @@ public class PlayerMouseControls : MonoBehaviour {
     void MouseRay()
     {
         totalCurrency = GameManager.instance.ecoManager.GetCurrency();
-        Debug.Log("total: " + totalCurrency);
         controlLayer = buildingLayer;
         mousePosInWorldCoords = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         dragStart = new Vector3(mousePosInWorldCoords.x,mousePosInWorldCoords.y,0);
         RaycastHit2D[] hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, Mathf.Infinity, 1 << controlLayer);
-
-        Debug.Log(controlLayer);
 
         if (hits.Length <= 0)
         {
@@ -167,5 +163,6 @@ public class PlayerMouseControls : MonoBehaviour {
         GameManager.instance.uiManager.SetMoneyText(totalCurrency - totalCost);
         GameManager.instance.uiManager.HideMouseText();
         totalCurrency = 0;
+        isDragging = false;
     }
 }
