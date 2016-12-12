@@ -1,8 +1,13 @@
 ﻿using Pathfinding;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Wall : MonoBehaviour , IDestructible{
-    int health = 100;
+
+    [SerializeField]
+    List<Sprite> wallSprites = new List<Sprite>();
+
+    public int health = 100;
 
     public void Hit(int damage)
     {

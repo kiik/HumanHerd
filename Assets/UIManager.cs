@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour {
     public GameObject optionsPanel;
     public GameObject tutorialPanel;
     public GameObject topPanel;
+    public GameObject sideBar;
 
     // Text
     public Text moneyText;
@@ -57,12 +58,14 @@ public class UIManager : MonoBehaviour {
         {
             menuState = MenuState.MainMenu;
             topPanel.SetActive(false);
+            sideBar.SetActive(false);
             mainMenuPanel.SetActive(true);
         }
         else if (SceneManager.GetActiveScene().name == "Game" || SceneManager.GetActiveScene().name == "Game(Vader)")
         {
             menuState = MenuState.MenuOff;
             topPanel.SetActive(true);
+            sideBar.SetActive(true);
             mainMenuPanel.SetActive(false);
             moneyText.text = GameManager.instance.ecoManager.GetCurrency().ToString();
             sheepText.text = GameManager.instance.ecoManager.GetSheepCount().ToString();
