@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EconomyManager : MonoBehaviour {
 
-    int currency = 200;
+    int currency = 700;
     public List<GameObject> sheepList = new List<GameObject>();
 
     public void AddCurrency(int n)

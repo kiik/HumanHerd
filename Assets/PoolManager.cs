@@ -8,13 +8,20 @@ public class PoolManager : MonoBehaviour
     public static PoolManager instance = null;
 
     [SerializeField]
-    GameObject WoodenWallParent;
+    GameObject StoneWall;
+    [SerializeField]
+    GameObject StoneWallBuild;
+    [SerializeField]
+    GameObject wallParent;
     [SerializeField]
     GameObject WoodenWall;
     [SerializeField]
     GameObject WoodenWallBuild;
     public int woodenWallPoolCount = 0;
-    public List<GameObject> woodenWallPool = new List<GameObject>();
+    public List<GameObject> wallPool = new List<GameObject>();
+
+    public GameObject wall;
+    public GameObject wallBuild;
 
     void Awake()
     {
@@ -24,6 +31,8 @@ public class PoolManager : MonoBehaviour
 
     void Start()
     {
+        wall = WoodenWall;
+        wallBuild = WoodenWallBuild;
         InitPools();
     }
 
@@ -31,29 +40,30 @@ public class PoolManager : MonoBehaviour
     {
         for (int i = 0; i < woodenWallPoolCount; i++)
         {
-            GameObject go = Instantiate(WoodenWall);
-            woodenWallPool.Add(go);
-            go.transform.SetParent(WoodenWallParent.transform);
-            WoodenWall.GetComponentInChildren<SpriteRenderer>().enabled = false;
+            GameObject go = Instantiate(wall);
+            wallPool.Add(go);
+            go.transform.SetParent(wallParent.transform);
+            wall.GetComponentInChildren<SpriteRenderer>().enabled = false;
         }
     }
 
     public void IncreaseWoodenWallPool()
     {
-        GameObject go = Instantiate(WoodenWall);
-        woodenWallPool.Add(go);
-        go.transform.SetParent(WoodenWallParent.transform);
-        WoodenWall.GetComponent<Relay>().spriteRenderer.enabled = false;
+        GameObject go = Instantiate(wall);
+        wallPool.Add(go);
+        go.transform.SetParent(wallParent.transform);
+        if (wall.GetComponent<Relay>() == null) { return; }
+        wall.GetComponent<Relay>().spriteRenderer.enabled = false;
     }
 
     public int GetWoodenWallPoolCount()
     {
-        return woodenWallPool.Count;
+        return wallPool.Count;
     }
 
     public void ResetWoodenWallPool()
     {
-        foreach (GameObject go in woodenWallPool)
+        foreach (GameObject go in wallPool)
         {
             Relay relay = go.GetComponent<Relay>();
             relay.buildingMaterial.SetBMInactive();
@@ -65,10 +75,12 @@ public class PoolManager : MonoBehaviour
     public int SetWoodenWallPos(int index, Vector2 pos)
     {
         if (float.IsNaN(pos.x)) { return 0; }
-
-        GameObject woodenWall = woodenWallPool[index];
-        woodenWall.transform.position = pos;
-        Relay relay = woodenWall.GetComponent<Relay>();
+        
+        GameObject buildWall = wallPool[index];
+        buildWall.transform.position = pos;
+        Debug.Log(buildWall.name);
+        Relay relay = buildWall.GetComponent<Relay>();
+        if (relay == null) { return 0; }
         relay.buildingMaterial.EnableSpriteRenderer();
         relay.buildingMaterial.Clear();
         relay.buildingMaterial.SetBMActive();
@@ -78,8 +90,9 @@ public class PoolManager : MonoBehaviour
 
     public void CheckWoodenWallDisable(int index)
     {
-        GameObject go = woodenWallPool[index];
+        GameObject go = wallPool[index];
         Relay relay = go.GetComponent<Relay>();
+        if (relay == null) { return; }
         if (relay.buildingMaterial.IsActive())
         {
             go.transform.localPosition = Vector2.zero;
@@ -96,9 +109,11 @@ public class PoolManager : MonoBehaviour
 
         int totalCost = 0;
 
-        foreach (GameObject go in woodenWallPool.Where(g => g.GetComponent<Relay>().buildingMaterial.IsActive() && !g.GetComponent<Relay>().buildingMaterial.IsObstructed()))
+        foreach (GameObject go in wallPool)
         {
-            GameObject g = Instantiate(WoodenWallBuild, go.transform.position, go.transform.rotation);
+            if (go.GetComponent<Relay>() == null) { return 0; }
+            if (!(go.GetComponent<Relay>().buildingMaterial.IsActive() && !go.GetComponent<Relay>().buildingMaterial.IsObstructed())) { continue; }
+            GameObject g = Instantiate(wallBuild, go.transform.position, go.transform.rotation);
             totalCost += go.GetComponent<Relay>().buildingMaterial.cost;
             if (g1 == null)
             {
@@ -129,13 +144,34 @@ public class PoolManager : MonoBehaviour
 
     public void ProhibitBuild()
     {
-        foreach (GameObject go in woodenWallPool)
+        foreach (GameObject go in wallPool)
         {
             Relay relay = go.GetComponent<Relay>();
+            if (relay == null) { return; }
             if (relay.buildingMaterial.IsActive())
             {
                 relay.buildingMaterial.SetObstructed();
             }
+        }
+    }
+
+    public void UpgradeToStone()
+    {
+        wall = StoneWallBuild;
+        wallBuild = StoneWall;
+
+        int count = wallPool.Count;
+        foreach (GameObject g in wallPool)
+        {
+            Destroy(g);
+        }
+        wallPool.Clear();
+        for (int i = 0; i < count; i++)
+        {
+            GameObject go = Instantiate(wall);
+            wallPool.Add(go);
+            go.transform.SetParent(wallParent.transform);
+            wall.GetComponentInChildren<SpriteRenderer>().enabled = false;
         }
     }
 }

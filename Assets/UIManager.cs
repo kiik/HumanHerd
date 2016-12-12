@@ -195,4 +195,13 @@ public class UIManager : MonoBehaviour {
             ToggleMenu();
         }
     }
+
+    public void BuySheep()
+    {
+
+    }
+    public void UpgradeWall()
+    {
+        GameManager.instance.upgradeManager.UpgradeWall();
+    }
 }

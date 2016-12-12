@@ -10,6 +10,7 @@ public class SoundManager : MonoBehaviour {
     public AudioSource cameraConstructionAS;
     public AudioClip wallConstructionFinish;
     public AudioClip wallLocate;
+    public AudioClip wallBuildFail;
 
     // Wall destruction
     public AudioClip wallHit;
@@ -30,6 +31,7 @@ public class SoundManager : MonoBehaviour {
 
     // Wall
     public void WallLocate() { cameraConstructionAS.PlayOneShot(wallLocate); }
+    public void WallBuildFail() { cameraConstructionAS.PlayOneShot(wallBuildFail); }
     public void WallConstructionFinish() { cameraConstructionAS.PlayOneShot(wallConstructionFinish); }
     public void WallHit(Vector2 pos) {
         GameObject go = Instantiate(tempAS, pos, Quaternion.identity);
