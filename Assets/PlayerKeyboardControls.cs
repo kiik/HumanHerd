@@ -31,6 +31,8 @@ public class PlayerKeyboardControls : MonoBehaviour {
 
     [SerializeField]
     BoxCollider2D pickupControllerCollider;
+    [SerializeField]
+    PickupController pickupController;
 
     void Start () {
         rb = GetComponent<Rigidbody2D>();
@@ -59,7 +61,15 @@ public class PlayerKeyboardControls : MonoBehaviour {
         {
             Right();
         }
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            if (pickupController.state == PickupController.State.Busy)
+            {
+                pickupController.Release();
+                pickupController.state = PickupController.State.Free;
+            }
+        }
+        if (Input.GetKey(KeyCode.Space) && pickupController.state == PickupController.State.Free)
         {
             Descend();
         }
