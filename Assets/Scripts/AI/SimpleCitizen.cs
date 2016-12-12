@@ -37,7 +37,9 @@ public class SimpleCitizen : AIRoam {
 	  }
 
 	  void OnTriggerEnter2D(Collider2D o) {
-
+			if(o.gameObject.tag == "InvasionTarget") {
+				onEndgoalReached();
+			}
 	  }
 
 		void OnTriggerExit2D(Collider2D o) {
@@ -96,6 +98,8 @@ public class SimpleCitizen : AIRoam {
 		void startEmigrating() {
 			m_roaming = false;
 			findEmigrationTarget();
+
+			GameObject.Find("Managers").GetComponent<SheepManager>().addEscapee(gameObject);
 		}
 
 		public void immobilize() {
@@ -105,6 +109,10 @@ public class SimpleCitizen : AIRoam {
 
 		public void mobilize() {
 			m_pathing = true;
+		}
+
+		void onEndgoalReached() {
+			//TODO: Affect score
 		}
 
 }
