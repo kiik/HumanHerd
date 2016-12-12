@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour {
     public GameObject tutorialPanel;
     public GameObject topPanel;
     public GameObject sideBar;
+    public GameObject gameOverPanel;
 
     // Text
     public Text moneyText;
@@ -69,7 +70,7 @@ public class UIManager : MonoBehaviour {
             mainMenuPanel.SetActive(false);
             moneyText.text = GameManager.instance.ecoManager.GetCurrency().ToString();
             sheepText.text = GameManager.instance.ecoManager.GetSheepCount().ToString();
-            // TODO add population count texts
+            populationEscapedText.text = "0/3";
         }
     }
 
@@ -131,6 +132,20 @@ public class UIManager : MonoBehaviour {
         tutorialPanel.SetActive(true);
         mainMenuPanel.SetActive(false);
         menuPanel.SetActive(false);
+    }
+    public void CloseTutorial()
+    {
+        if (SceneManager.GetActiveScene().name == "MainMenu")
+        {
+            mainMenuPanel.SetActive(true);
+            menuState = MenuState.MainMenu;
+        }
+        else if (SceneManager.GetActiveScene().name == "Game" || SceneManager.GetActiveScene().name == "Game(Vader)")
+        {
+            menuState = MenuState.GameMenu;
+            menuPanel.SetActive(true);
+        }
+        tutorialPanel.SetActive(false);
     }
     public void Options()
     {
@@ -203,5 +218,22 @@ public class UIManager : MonoBehaviour {
     public void UpgradeWall()
     {
         GameManager.instance.upgradeManager.UpgradeWall();
+    }
+
+    public void GameOver()
+    {
+        Time.timeScale = 0;
+        gameOverPanel.SetActive(true);
+        menuPanel.SetActive(false);
+        tutorialPanel.SetActive(false);
+    }
+    public void Restart()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    public void IncreaseEscapedCount()
+    {
+        populationEscapedText.text = GameManager.instance.ecoManager.escaped+"/3";
     }
 }

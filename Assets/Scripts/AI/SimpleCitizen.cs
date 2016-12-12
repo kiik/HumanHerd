@@ -112,7 +112,7 @@ public class SimpleCitizen : AIRoam {
 		}
 
 		void onEndgoalReached() {
-			//TODO: Affect score
+            GameManager.instance.ecoManager.Escaped();
 		}
 
 }

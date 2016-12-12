@@ -117,8 +117,6 @@ public class PlayerKeyboardControls : MonoBehaviour {
         }
         else
         {
-            //Debug.Log("has descended");
-            // TODO add descending sound effect
             pickupControllerCollider.enabled = true;
         }
 
