@@ -48,5 +48,11 @@ public class PickupController : MonoBehaviour {
         carriage.mobilize();
 
         carriage = null;
+
+        if (Physics2D.Raycast(parentTransform.position, Vector2.zero, Mathf.Infinity, 1 << LayerMask.NameToLayer("LandingArea")))
+        {
+            GameManager.instance.ecoManager.AddCurrency(10);
+            GameManager.instance.uiManager.SetMoneyText(GameManager.instance.ecoManager.GetCurrency());
+        }
     }
 }

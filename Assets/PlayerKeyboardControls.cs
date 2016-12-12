@@ -87,21 +87,25 @@ public class PlayerKeyboardControls : MonoBehaviour {
     {
         rb.AddForce(transform.up * flightForce * Time.deltaTime, ForceMode2D.Impulse);
         anim.SetFloat("speedY", 1);
+        anim.SetFloat("speedX", 0);
     }
     void Down()
     {
         rb.AddForce(-transform.up * flightForce * Time.deltaTime, ForceMode2D.Impulse);
         anim.SetFloat("speedY", -1);
+        anim.SetFloat("speedX", 0);
     }
     void Left()
     {
         anim.SetFloat("speedX", -1);
+        anim.SetFloat("speedY", 0);
         rb.AddForce(-transform.right * flightForce * Time.deltaTime, ForceMode2D.Impulse);
         shadow.transform.localPosition = shadowOffsetX_leftVector;
     }
     void Right()
     {
         anim.SetFloat("speedX", 1);
+        anim.SetFloat("speedY", 0);
         rb.AddForce(transform.right * flightForce * Time.deltaTime, ForceMode2D.Impulse);
         shadow.transform.localPosition = shadowOffsetX_rightVector;
     }
