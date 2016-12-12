@@ -3,10 +3,17 @@ using UnityEngine.SceneManagement;
 
 public class SoundManager : MonoBehaviour {
 
+    // Temp AS
+    public GameObject tempAS;
+
     // Wall construction clips
     public AudioSource cameraConstructionAS;
     public AudioClip wallConstructionFinish;
     public AudioClip wallLocate;
+
+    // Wall destruction
+    public AudioClip wallHit;
+    public AudioClip wallDestruct;
 
     // Economy
     public AudioSource cameraEconomyAS;
@@ -21,25 +28,30 @@ public class SoundManager : MonoBehaviour {
         CheckSoundOptions();
     }
 
-    public void WallLocate()
-    {
-        cameraConstructionAS.PlayOneShot(wallLocate);
+    // Wall
+    public void WallLocate() { cameraConstructionAS.PlayOneShot(wallLocate); }
+    public void WallConstructionFinish() { cameraConstructionAS.PlayOneShot(wallConstructionFinish); }
+    public void WallHit(Vector2 pos) {
+        GameObject go = Instantiate(tempAS, pos, Quaternion.identity);
+        AudioSource source = go.GetComponent<AudioSource>();
+        source.spatialBlend = 0;
+        source.PlayOneShot(wallHit);
+        Destroy(go, 2f);
+    }
+    public void WallDestruct(Vector2 pos) {
+        GameObject go =  Instantiate(tempAS, pos, Quaternion.identity);
+        AudioSource source = go.GetComponent<AudioSource>();
+        source.spatialBlend = 0;
+        source.PlayOneShot(wallDestruct);
+        Destroy(source.gameObject);
     }
 
-    public void WallConstructionFinish()
-    {
-        cameraConstructionAS.PlayOneShot(wallConstructionFinish);
-    }
+    // Economy
+    public void MoneyMinus() { cameraEconomyAS.PlayOneShot(moneyMinus); }
+    public void MoneyPlus() { cameraEconomyAS.PlayOneShot(moneyPlus); }
 
-    public void MoneyMinus()
-    {
-        cameraEconomyAS.PlayOneShot(moneyMinus);
-    }
-    public void MoneyPlus()
-    {
-        cameraEconomyAS.PlayOneShot(moneyPlus);
-    }
 
+    #region SoundCheck
     public void CheckSoundOptions()
     {
         if (PlayerPrefs.HasKey("Music"))
@@ -56,4 +68,5 @@ public class SoundManager : MonoBehaviour {
 
     void ActivateMusic() { cameraMusicAS.loop = true; cameraMusicAS.Play(); cameraMusicAS.volume = SceneManager.GetActiveScene().name == "Game" || SceneManager.GetActiveScene().name == "Game(Vader)" ? 0.4f : 1; }
     void DeactivateMusic() { cameraMusicAS.Stop(); cameraMusicAS.volume = 0; }
+    #endregion
 }
