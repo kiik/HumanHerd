@@ -102,10 +102,12 @@ public class UIManager : MonoBehaviour {
             if (SceneManager.GetActiveScene().name == "MainMenu")
             {
                 menuState = MenuState.MainMenu;
+                mainMenuPanel.SetActive(true);
             }
-            else if (SceneManager.GetActiveScene().name == "Game")
+            else if (SceneManager.GetActiveScene().name == "Game" || SceneManager.GetActiveScene().name == "Game(Vader)")
             {
                 menuState = MenuState.GameMenu;
+                menuPanel.SetActive(true);
             }
             tutorialPanel.SetActive(false);
         }
@@ -124,6 +126,8 @@ public class UIManager : MonoBehaviour {
     {
         menuState = MenuState.Tutorial;
         tutorialPanel.SetActive(true);
+        mainMenuPanel.SetActive(false);
+        menuPanel.SetActive(false);
     }
     public void Options()
     {

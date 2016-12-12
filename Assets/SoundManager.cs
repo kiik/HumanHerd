@@ -6,6 +6,7 @@ public class SoundManager : MonoBehaviour {
     // Wall construction clips
     public AudioSource cameraConstructionAS;
     public AudioClip wallConstructionFinish;
+    public AudioClip wallLocate;
 
     // Economy
     public AudioSource cameraEconomyAS;
@@ -18,6 +19,11 @@ public class SoundManager : MonoBehaviour {
     void Awake()
     {
         CheckSoundOptions();
+    }
+
+    public void WallLocate()
+    {
+        cameraConstructionAS.PlayOneShot(wallLocate);
     }
 
     public void WallConstructionFinish()

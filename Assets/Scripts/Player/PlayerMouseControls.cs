@@ -161,6 +161,7 @@ public class PlayerMouseControls : MonoBehaviour {
         if (totalCost > 0)
         {
             GameManager.instance.soundManager.WallConstructionFinish();
+            GameManager.instance.soundManager.MoneyMinus();
         }
         GameManager.instance.ecoManager.DecreaseCurrency(totalCost);
         GameManager.instance.uiManager.SetMoneyText(totalCurrency - totalCost);

@@ -37,7 +37,9 @@ public class BuildingMaterial : MonoBehaviour {
     }
     public void SetBMActive()
     {
+        if (isActive) { return; }
         isActive = true;
+        GameManager.instance.soundManager.WallLocate();
     }
     public void SetBMInactive()
     {
